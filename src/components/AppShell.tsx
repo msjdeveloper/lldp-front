@@ -68,7 +68,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
       >
         <div className="px-5 py-6 hidden lg:block">
           <div className="flex items-center gap-3 mb-1">
-            <LogoMark className="w-8 h-8" style={{ color: "var(--sage)" }} />
+            <LogoMark className="w-8 h-8" />
           </div>
           <div className="eyebrow mt-3">Accueil familial</div>
           <div className="font-display text-[18px] leading-tight" style={{ color: "var(--ink)" }}>
@@ -76,7 +76,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
           </div>
         </div>
         <div className="px-2 py-2 lg:hidden flex justify-center">
-          <LogoMark className="w-8 h-8" style={{ color: "var(--sage)" }} />
+          <LogoMark className="w-8 h-8" />
         </div>
 
         <nav className="flex-1 flex flex-col gap-1 mt-2">
