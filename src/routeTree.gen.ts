@@ -13,14 +13,21 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
 import { Route as AppSettingsRouteImport } from './routes/_app.settings'
-import { Route as AppMenuRouteImport } from './routes/_app.menu'
 import { Route as AppLeadsRouteImport } from './routes/_app.leads'
 import { Route as AppContractsRouteImport } from './routes/_app.contracts'
+import { Route as AppMenuIndexRouteImport } from './routes/_app.menu.index'
 import { Route as AppInvoicesIndexRouteImport } from './routes/_app.invoices.index'
 import { Route as AppChildrenIndexRouteImport } from './routes/_app.children.index'
+import { Route as AppMenuDayRouteImport } from './routes/_app.menu.$day'
+import { Route as AppLeadsIdRouteImport } from './routes/_app.leads.$id'
+import { Route as AppInvoicesNewRouteImport } from './routes/_app.invoices.new'
 import { Route as AppInvoicesIdRouteImport } from './routes/_app.invoices.$id'
+import { Route as AppContractsNewRouteImport } from './routes/_app.contracts.new'
+import { Route as AppContractsIdRouteImport } from './routes/_app.contracts.$id'
 import { Route as AppChildrenNewRouteImport } from './routes/_app.children.new'
 import { Route as AppChildrenIdRouteImport } from './routes/_app.children.$id'
+import { Route as AppInvoicesIdEditRouteImport } from './routes/_app.invoices.$id.edit'
+import { Route as AppChildrenIdEditRouteImport } from './routes/_app.children.$id.edit'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -41,11 +48,6 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
-const AppMenuRoute = AppMenuRouteImport.update({
-  id: '/menu',
-  path: '/menu',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppLeadsRoute = AppLeadsRouteImport.update({
   id: '/leads',
   path: '/leads',
@@ -54,6 +56,11 @@ const AppLeadsRoute = AppLeadsRouteImport.update({
 const AppContractsRoute = AppContractsRouteImport.update({
   id: '/contracts',
   path: '/contracts',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMenuIndexRoute = AppMenuIndexRouteImport.update({
+  id: '/menu/',
+  path: '/menu/',
   getParentRoute: () => AppRoute,
 } as any)
 const AppInvoicesIndexRoute = AppInvoicesIndexRouteImport.update({
@@ -66,10 +73,35 @@ const AppChildrenIndexRoute = AppChildrenIndexRouteImport.update({
   path: '/children/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppMenuDayRoute = AppMenuDayRouteImport.update({
+  id: '/menu/$day',
+  path: '/menu/$day',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLeadsIdRoute = AppLeadsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AppLeadsRoute,
+} as any)
+const AppInvoicesNewRoute = AppInvoicesNewRouteImport.update({
+  id: '/invoices/new',
+  path: '/invoices/new',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppInvoicesIdRoute = AppInvoicesIdRouteImport.update({
   id: '/invoices/$id',
   path: '/invoices/$id',
   getParentRoute: () => AppRoute,
+} as any)
+const AppContractsNewRoute = AppContractsNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => AppContractsRoute,
+} as any)
+const AppContractsIdRoute = AppContractsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AppContractsRoute,
 } as any)
 const AppChildrenNewRoute = AppChildrenNewRouteImport.update({
   id: '/children/new',
@@ -81,47 +113,78 @@ const AppChildrenIdRoute = AppChildrenIdRouteImport.update({
   path: '/children/$id',
   getParentRoute: () => AppRoute,
 } as any)
+const AppInvoicesIdEditRoute = AppInvoicesIdEditRouteImport.update({
+  id: '/edit',
+  path: '/edit',
+  getParentRoute: () => AppInvoicesIdRoute,
+} as any)
+const AppChildrenIdEditRoute = AppChildrenIdEditRouteImport.update({
+  id: '/edit',
+  path: '/edit',
+  getParentRoute: () => AppChildrenIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/login': typeof LoginRoute
-  '/contracts': typeof AppContractsRoute
-  '/leads': typeof AppLeadsRoute
-  '/menu': typeof AppMenuRoute
+  '/contracts': typeof AppContractsRouteWithChildren
+  '/leads': typeof AppLeadsRouteWithChildren
   '/settings': typeof AppSettingsRoute
-  '/children/$id': typeof AppChildrenIdRoute
+  '/children/$id': typeof AppChildrenIdRouteWithChildren
   '/children/new': typeof AppChildrenNewRoute
-  '/invoices/$id': typeof AppInvoicesIdRoute
+  '/contracts/$id': typeof AppContractsIdRoute
+  '/contracts/new': typeof AppContractsNewRoute
+  '/invoices/$id': typeof AppInvoicesIdRouteWithChildren
+  '/invoices/new': typeof AppInvoicesNewRoute
+  '/leads/$id': typeof AppLeadsIdRoute
+  '/menu/$day': typeof AppMenuDayRoute
   '/children/': typeof AppChildrenIndexRoute
   '/invoices/': typeof AppInvoicesIndexRoute
+  '/menu/': typeof AppMenuIndexRoute
+  '/children/$id/edit': typeof AppChildrenIdEditRoute
+  '/invoices/$id/edit': typeof AppInvoicesIdEditRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
-  '/contracts': typeof AppContractsRoute
-  '/leads': typeof AppLeadsRoute
-  '/menu': typeof AppMenuRoute
+  '/contracts': typeof AppContractsRouteWithChildren
+  '/leads': typeof AppLeadsRouteWithChildren
   '/settings': typeof AppSettingsRoute
   '/': typeof AppIndexRoute
-  '/children/$id': typeof AppChildrenIdRoute
+  '/children/$id': typeof AppChildrenIdRouteWithChildren
   '/children/new': typeof AppChildrenNewRoute
-  '/invoices/$id': typeof AppInvoicesIdRoute
+  '/contracts/$id': typeof AppContractsIdRoute
+  '/contracts/new': typeof AppContractsNewRoute
+  '/invoices/$id': typeof AppInvoicesIdRouteWithChildren
+  '/invoices/new': typeof AppInvoicesNewRoute
+  '/leads/$id': typeof AppLeadsIdRoute
+  '/menu/$day': typeof AppMenuDayRoute
   '/children': typeof AppChildrenIndexRoute
   '/invoices': typeof AppInvoicesIndexRoute
+  '/menu': typeof AppMenuIndexRoute
+  '/children/$id/edit': typeof AppChildrenIdEditRoute
+  '/invoices/$id/edit': typeof AppInvoicesIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
-  '/_app/contracts': typeof AppContractsRoute
-  '/_app/leads': typeof AppLeadsRoute
-  '/_app/menu': typeof AppMenuRoute
+  '/_app/contracts': typeof AppContractsRouteWithChildren
+  '/_app/leads': typeof AppLeadsRouteWithChildren
   '/_app/settings': typeof AppSettingsRoute
   '/_app/': typeof AppIndexRoute
-  '/_app/children/$id': typeof AppChildrenIdRoute
+  '/_app/children/$id': typeof AppChildrenIdRouteWithChildren
   '/_app/children/new': typeof AppChildrenNewRoute
-  '/_app/invoices/$id': typeof AppInvoicesIdRoute
+  '/_app/contracts/$id': typeof AppContractsIdRoute
+  '/_app/contracts/new': typeof AppContractsNewRoute
+  '/_app/invoices/$id': typeof AppInvoicesIdRouteWithChildren
+  '/_app/invoices/new': typeof AppInvoicesNewRoute
+  '/_app/leads/$id': typeof AppLeadsIdRoute
+  '/_app/menu/$day': typeof AppMenuDayRoute
   '/_app/children/': typeof AppChildrenIndexRoute
   '/_app/invoices/': typeof AppInvoicesIndexRoute
+  '/_app/menu/': typeof AppMenuIndexRoute
+  '/_app/children/$id/edit': typeof AppChildrenIdEditRoute
+  '/_app/invoices/$id/edit': typeof AppInvoicesIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -130,40 +193,61 @@ export interface FileRouteTypes {
     | '/login'
     | '/contracts'
     | '/leads'
-    | '/menu'
     | '/settings'
     | '/children/$id'
     | '/children/new'
+    | '/contracts/$id'
+    | '/contracts/new'
     | '/invoices/$id'
+    | '/invoices/new'
+    | '/leads/$id'
+    | '/menu/$day'
     | '/children/'
     | '/invoices/'
+    | '/menu/'
+    | '/children/$id/edit'
+    | '/invoices/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
     | '/contracts'
     | '/leads'
-    | '/menu'
     | '/settings'
     | '/'
     | '/children/$id'
     | '/children/new'
+    | '/contracts/$id'
+    | '/contracts/new'
     | '/invoices/$id'
+    | '/invoices/new'
+    | '/leads/$id'
+    | '/menu/$day'
     | '/children'
     | '/invoices'
+    | '/menu'
+    | '/children/$id/edit'
+    | '/invoices/$id/edit'
   id:
     | '__root__'
     | '/_app'
     | '/login'
     | '/_app/contracts'
     | '/_app/leads'
-    | '/_app/menu'
     | '/_app/settings'
     | '/_app/'
     | '/_app/children/$id'
     | '/_app/children/new'
+    | '/_app/contracts/$id'
+    | '/_app/contracts/new'
     | '/_app/invoices/$id'
+    | '/_app/invoices/new'
+    | '/_app/leads/$id'
+    | '/_app/menu/$day'
     | '/_app/children/'
     | '/_app/invoices/'
+    | '/_app/menu/'
+    | '/_app/children/$id/edit'
+    | '/_app/invoices/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -201,13 +285,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/menu': {
-      id: '/_app/menu'
-      path: '/menu'
-      fullPath: '/menu'
-      preLoaderRoute: typeof AppMenuRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/_app/leads': {
       id: '/_app/leads'
       path: '/leads'
@@ -220,6 +297,13 @@ declare module '@tanstack/react-router' {
       path: '/contracts'
       fullPath: '/contracts'
       preLoaderRoute: typeof AppContractsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/menu/': {
+      id: '/_app/menu/'
+      path: '/menu'
+      fullPath: '/menu/'
+      preLoaderRoute: typeof AppMenuIndexRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/invoices/': {
@@ -236,12 +320,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppChildrenIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/menu/$day': {
+      id: '/_app/menu/$day'
+      path: '/menu/$day'
+      fullPath: '/menu/$day'
+      preLoaderRoute: typeof AppMenuDayRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/leads/$id': {
+      id: '/_app/leads/$id'
+      path: '/$id'
+      fullPath: '/leads/$id'
+      preLoaderRoute: typeof AppLeadsIdRouteImport
+      parentRoute: typeof AppLeadsRoute
+    }
+    '/_app/invoices/new': {
+      id: '/_app/invoices/new'
+      path: '/invoices/new'
+      fullPath: '/invoices/new'
+      preLoaderRoute: typeof AppInvoicesNewRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/invoices/$id': {
       id: '/_app/invoices/$id'
       path: '/invoices/$id'
       fullPath: '/invoices/$id'
       preLoaderRoute: typeof AppInvoicesIdRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/_app/contracts/new': {
+      id: '/_app/contracts/new'
+      path: '/new'
+      fullPath: '/contracts/new'
+      preLoaderRoute: typeof AppContractsNewRouteImport
+      parentRoute: typeof AppContractsRoute
+    }
+    '/_app/contracts/$id': {
+      id: '/_app/contracts/$id'
+      path: '/$id'
+      fullPath: '/contracts/$id'
+      preLoaderRoute: typeof AppContractsIdRouteImport
+      parentRoute: typeof AppContractsRoute
     }
     '/_app/children/new': {
       id: '/_app/children/new'
@@ -257,33 +376,101 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppChildrenIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/invoices/$id/edit': {
+      id: '/_app/invoices/$id/edit'
+      path: '/edit'
+      fullPath: '/invoices/$id/edit'
+      preLoaderRoute: typeof AppInvoicesIdEditRouteImport
+      parentRoute: typeof AppInvoicesIdRoute
+    }
+    '/_app/children/$id/edit': {
+      id: '/_app/children/$id/edit'
+      path: '/edit'
+      fullPath: '/children/$id/edit'
+      preLoaderRoute: typeof AppChildrenIdEditRouteImport
+      parentRoute: typeof AppChildrenIdRoute
+    }
   }
 }
 
+interface AppContractsRouteChildren {
+  AppContractsIdRoute: typeof AppContractsIdRoute
+  AppContractsNewRoute: typeof AppContractsNewRoute
+}
+
+const AppContractsRouteChildren: AppContractsRouteChildren = {
+  AppContractsIdRoute: AppContractsIdRoute,
+  AppContractsNewRoute: AppContractsNewRoute,
+}
+
+const AppContractsRouteWithChildren = AppContractsRoute._addFileChildren(
+  AppContractsRouteChildren,
+)
+
+interface AppLeadsRouteChildren {
+  AppLeadsIdRoute: typeof AppLeadsIdRoute
+}
+
+const AppLeadsRouteChildren: AppLeadsRouteChildren = {
+  AppLeadsIdRoute: AppLeadsIdRoute,
+}
+
+const AppLeadsRouteWithChildren = AppLeadsRoute._addFileChildren(
+  AppLeadsRouteChildren,
+)
+
+interface AppChildrenIdRouteChildren {
+  AppChildrenIdEditRoute: typeof AppChildrenIdEditRoute
+}
+
+const AppChildrenIdRouteChildren: AppChildrenIdRouteChildren = {
+  AppChildrenIdEditRoute: AppChildrenIdEditRoute,
+}
+
+const AppChildrenIdRouteWithChildren = AppChildrenIdRoute._addFileChildren(
+  AppChildrenIdRouteChildren,
+)
+
+interface AppInvoicesIdRouteChildren {
+  AppInvoicesIdEditRoute: typeof AppInvoicesIdEditRoute
+}
+
+const AppInvoicesIdRouteChildren: AppInvoicesIdRouteChildren = {
+  AppInvoicesIdEditRoute: AppInvoicesIdEditRoute,
+}
+
+const AppInvoicesIdRouteWithChildren = AppInvoicesIdRoute._addFileChildren(
+  AppInvoicesIdRouteChildren,
+)
+
 interface AppRouteChildren {
-  AppContractsRoute: typeof AppContractsRoute
-  AppLeadsRoute: typeof AppLeadsRoute
-  AppMenuRoute: typeof AppMenuRoute
+  AppContractsRoute: typeof AppContractsRouteWithChildren
+  AppLeadsRoute: typeof AppLeadsRouteWithChildren
   AppSettingsRoute: typeof AppSettingsRoute
   AppIndexRoute: typeof AppIndexRoute
-  AppChildrenIdRoute: typeof AppChildrenIdRoute
+  AppChildrenIdRoute: typeof AppChildrenIdRouteWithChildren
   AppChildrenNewRoute: typeof AppChildrenNewRoute
-  AppInvoicesIdRoute: typeof AppInvoicesIdRoute
+  AppInvoicesIdRoute: typeof AppInvoicesIdRouteWithChildren
+  AppInvoicesNewRoute: typeof AppInvoicesNewRoute
+  AppMenuDayRoute: typeof AppMenuDayRoute
   AppChildrenIndexRoute: typeof AppChildrenIndexRoute
   AppInvoicesIndexRoute: typeof AppInvoicesIndexRoute
+  AppMenuIndexRoute: typeof AppMenuIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppContractsRoute: AppContractsRoute,
-  AppLeadsRoute: AppLeadsRoute,
-  AppMenuRoute: AppMenuRoute,
+  AppContractsRoute: AppContractsRouteWithChildren,
+  AppLeadsRoute: AppLeadsRouteWithChildren,
   AppSettingsRoute: AppSettingsRoute,
   AppIndexRoute: AppIndexRoute,
-  AppChildrenIdRoute: AppChildrenIdRoute,
+  AppChildrenIdRoute: AppChildrenIdRouteWithChildren,
   AppChildrenNewRoute: AppChildrenNewRoute,
-  AppInvoicesIdRoute: AppInvoicesIdRoute,
+  AppInvoicesIdRoute: AppInvoicesIdRouteWithChildren,
+  AppInvoicesNewRoute: AppInvoicesNewRoute,
+  AppMenuDayRoute: AppMenuDayRoute,
   AppChildrenIndexRoute: AppChildrenIndexRoute,
   AppInvoicesIndexRoute: AppInvoicesIndexRoute,
+  AppMenuIndexRoute: AppMenuIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

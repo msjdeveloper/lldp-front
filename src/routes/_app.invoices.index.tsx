@@ -23,7 +23,10 @@ function InvoicesPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="font-display text-[32px]">Factures</h1>
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <h1 className="font-display text-[32px]">Factures</h1>
+        <Link to="/invoices/new" className="btn-primary">+ Nouvelle facture</Link>
+      </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Stat label="Facturé ce mois" value={formatCHF(3480)} />

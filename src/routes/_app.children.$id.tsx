@@ -49,7 +49,9 @@ function ChildProfile() {
             Responsable : {child.guardian} · {child.guardianEmail}
           </div>
         </div>
-        <button className="btn-secondary"><Pencil size={14} /> Modifier</button>
+        <Link to="/children/$id/edit" params={{ id: child.id }} className="btn-secondary">
+          <Pencil size={14} /> Modifier
+        </Link>
       </section>
 
       <div className="inline-flex p-1 rounded-full self-start" style={{ background: "var(--canvas-2)" }}>

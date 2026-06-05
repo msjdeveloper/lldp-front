@@ -92,7 +92,10 @@ function InvoiceDetail() {
         </div>
       </section>
 
-      <div className="card-warm p-4 flex justify-end gap-3">
+      <div className="card-warm p-4 flex flex-wrap justify-end gap-3">
+        {(inv.status === "Brouillon" || inv.status === "Envoyée") && (
+          <Link to="/invoices/$id/edit" params={{ id: inv.id }} className="btn-secondary">Modifier</Link>
+        )}
         {inv.status === "Brouillon" && (
           <>
             <button className="btn-secondary" style={{ color: "var(--danger)" }}>Annuler la facture</button>

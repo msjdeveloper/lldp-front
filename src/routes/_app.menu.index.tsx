@@ -1,12 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Coffee, Utensils, Apple, ChevronLeft, ChevronRight, Pencil, Plus, AlertTriangle } from "lucide-react";
 
-export const Route = createFileRoute("/_app/menu")({
+export const Route = createFileRoute("/_app/menu/")({
   head: () => ({ meta: [{ title: "Menu · Le Lac des Petits" }] }),
   component: MenuPage,
 });
 
 type Day = {
+  key: string;
   label: string;
   breakfast?: string;
   lunch?: string;
@@ -15,11 +16,11 @@ type Day = {
 };
 
 const days: Day[] = [
-  { label: "Lundi 2 juin", breakfast: "Pain complet, confiture, lait", lunch: "Gratin de courgettes, riz, salade", snack: "Compote pomme-poire, biscuits maison", notes: "Variante sans lactose pour Emma" },
-  { label: "Mardi 3 juin", lunch: "Poulet rôti, purée, haricots verts" },
-  { label: "Mercredi 4 juin" },
-  { label: "Jeudi 5 juin", breakfast: "Yaourt, fruits frais", lunch: "Pâtes à la bolognaise, salade", snack: "Banane et amandes" },
-  { label: "Vendredi 6 juin", breakfast: "Porridge avoine, miel", lunch: "Poisson en papillote, légumes", snack: "Pain et chocolat" },
+  { key: "lundi", label: "Lundi 2 juin", breakfast: "Pain complet, confiture, lait", lunch: "Gratin de courgettes, riz, salade", snack: "Compote pomme-poire, biscuits maison", notes: "Variante sans lactose pour Emma" },
+  { key: "mardi", label: "Mardi 3 juin", lunch: "Poulet rôti, purée, haricots verts" },
+  { key: "mercredi", label: "Mercredi 4 juin" },
+  { key: "jeudi", label: "Jeudi 5 juin", breakfast: "Yaourt, fruits frais", lunch: "Pâtes à la bolognaise, salade", snack: "Banane et amandes" },
+  { key: "vendredi", label: "Vendredi 6 juin", breakfast: "Porridge avoine, miel", lunch: "Poisson en papillote, légumes", snack: "Pain et chocolat" },
 ];
 
 function DayCard({ d }: { d: Day }) {
@@ -28,12 +29,16 @@ function DayCard({ d }: { d: Day }) {
     <div className="card-warm p-5 flex flex-col gap-4" style={{ minHeight: 280 }}>
       <div className="flex items-start justify-between">
         <div className="font-semibold" style={{ color: "var(--ink)" }}>{d.label}</div>
-        <button className="p-1.5 rounded-md" style={{ color: "var(--ink-muted)" }}><Pencil size={14} /></button>
+        <Link to="/menu/$day" params={{ day: d.key }} className="p-1.5 rounded-md" style={{ color: "var(--ink-muted)" }}>
+          <Pencil size={14} />
+        </Link>
       </div>
       {empty ? (
         <div className="flex-1 flex flex-col items-center justify-center gap-3 text-center">
           <p className="text-sm" style={{ color: "var(--ink-muted)" }}>Aucun menu publié</p>
-          <button className="btn-secondary" style={{ padding: "8px 14px", minHeight: 38 }}><Plus size={14} /> Publier</button>
+          <Link to="/menu/$day" params={{ day: d.key }} className="btn-secondary" style={{ padding: "8px 14px", minHeight: 38 }}>
+            <Plus size={14} /> Publier
+          </Link>
         </div>
       ) : (
         <div className="flex flex-col gap-3 text-sm">
