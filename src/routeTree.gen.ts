@@ -19,6 +19,7 @@ import { Route as AppMenuIndexRouteImport } from './routes/_app.menu.index'
 import { Route as AppInvoicesIndexRouteImport } from './routes/_app.invoices.index'
 import { Route as AppChildrenIndexRouteImport } from './routes/_app.children.index'
 import { Route as AppMenuDayRouteImport } from './routes/_app.menu.$day'
+import { Route as AppLeadsIdRouteImport } from './routes/_app.leads.$id'
 import { Route as AppInvoicesNewRouteImport } from './routes/_app.invoices.new'
 import { Route as AppInvoicesIdRouteImport } from './routes/_app.invoices.$id'
 import { Route as AppContractsNewRouteImport } from './routes/_app.contracts.new'
@@ -77,6 +78,11 @@ const AppMenuDayRoute = AppMenuDayRouteImport.update({
   path: '/menu/$day',
   getParentRoute: () => AppRoute,
 } as any)
+const AppLeadsIdRoute = AppLeadsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AppLeadsRoute,
+} as any)
 const AppInvoicesNewRoute = AppInvoicesNewRouteImport.update({
   id: '/invoices/new',
   path: '/invoices/new',
@@ -122,7 +128,7 @@ export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/login': typeof LoginRoute
   '/contracts': typeof AppContractsRouteWithChildren
-  '/leads': typeof AppLeadsRoute
+  '/leads': typeof AppLeadsRouteWithChildren
   '/settings': typeof AppSettingsRoute
   '/children/$id': typeof AppChildrenIdRouteWithChildren
   '/children/new': typeof AppChildrenNewRoute
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/contracts/new': typeof AppContractsNewRoute
   '/invoices/$id': typeof AppInvoicesIdRouteWithChildren
   '/invoices/new': typeof AppInvoicesNewRoute
+  '/leads/$id': typeof AppLeadsIdRoute
   '/menu/$day': typeof AppMenuDayRoute
   '/children/': typeof AppChildrenIndexRoute
   '/invoices/': typeof AppInvoicesIndexRoute
@@ -140,7 +147,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/contracts': typeof AppContractsRouteWithChildren
-  '/leads': typeof AppLeadsRoute
+  '/leads': typeof AppLeadsRouteWithChildren
   '/settings': typeof AppSettingsRoute
   '/': typeof AppIndexRoute
   '/children/$id': typeof AppChildrenIdRouteWithChildren
@@ -149,6 +156,7 @@ export interface FileRoutesByTo {
   '/contracts/new': typeof AppContractsNewRoute
   '/invoices/$id': typeof AppInvoicesIdRouteWithChildren
   '/invoices/new': typeof AppInvoicesNewRoute
+  '/leads/$id': typeof AppLeadsIdRoute
   '/menu/$day': typeof AppMenuDayRoute
   '/children': typeof AppChildrenIndexRoute
   '/invoices': typeof AppInvoicesIndexRoute
@@ -161,7 +169,7 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/_app/contracts': typeof AppContractsRouteWithChildren
-  '/_app/leads': typeof AppLeadsRoute
+  '/_app/leads': typeof AppLeadsRouteWithChildren
   '/_app/settings': typeof AppSettingsRoute
   '/_app/': typeof AppIndexRoute
   '/_app/children/$id': typeof AppChildrenIdRouteWithChildren
@@ -170,6 +178,7 @@ export interface FileRoutesById {
   '/_app/contracts/new': typeof AppContractsNewRoute
   '/_app/invoices/$id': typeof AppInvoicesIdRouteWithChildren
   '/_app/invoices/new': typeof AppInvoicesNewRoute
+  '/_app/leads/$id': typeof AppLeadsIdRoute
   '/_app/menu/$day': typeof AppMenuDayRoute
   '/_app/children/': typeof AppChildrenIndexRoute
   '/_app/invoices/': typeof AppInvoicesIndexRoute
@@ -191,6 +200,7 @@ export interface FileRouteTypes {
     | '/contracts/new'
     | '/invoices/$id'
     | '/invoices/new'
+    | '/leads/$id'
     | '/menu/$day'
     | '/children/'
     | '/invoices/'
@@ -210,6 +220,7 @@ export interface FileRouteTypes {
     | '/contracts/new'
     | '/invoices/$id'
     | '/invoices/new'
+    | '/leads/$id'
     | '/menu/$day'
     | '/children'
     | '/invoices'
@@ -230,6 +241,7 @@ export interface FileRouteTypes {
     | '/_app/contracts/new'
     | '/_app/invoices/$id'
     | '/_app/invoices/new'
+    | '/_app/leads/$id'
     | '/_app/menu/$day'
     | '/_app/children/'
     | '/_app/invoices/'
@@ -315,6 +327,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMenuDayRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/leads/$id': {
+      id: '/_app/leads/$id'
+      path: '/$id'
+      fullPath: '/leads/$id'
+      preLoaderRoute: typeof AppLeadsIdRouteImport
+      parentRoute: typeof AppLeadsRoute
+    }
     '/_app/invoices/new': {
       id: '/_app/invoices/new'
       path: '/invoices/new'
@@ -388,6 +407,18 @@ const AppContractsRouteWithChildren = AppContractsRoute._addFileChildren(
   AppContractsRouteChildren,
 )
 
+interface AppLeadsRouteChildren {
+  AppLeadsIdRoute: typeof AppLeadsIdRoute
+}
+
+const AppLeadsRouteChildren: AppLeadsRouteChildren = {
+  AppLeadsIdRoute: AppLeadsIdRoute,
+}
+
+const AppLeadsRouteWithChildren = AppLeadsRoute._addFileChildren(
+  AppLeadsRouteChildren,
+)
+
 interface AppChildrenIdRouteChildren {
   AppChildrenIdEditRoute: typeof AppChildrenIdEditRoute
 }
@@ -414,7 +445,7 @@ const AppInvoicesIdRouteWithChildren = AppInvoicesIdRoute._addFileChildren(
 
 interface AppRouteChildren {
   AppContractsRoute: typeof AppContractsRouteWithChildren
-  AppLeadsRoute: typeof AppLeadsRoute
+  AppLeadsRoute: typeof AppLeadsRouteWithChildren
   AppSettingsRoute: typeof AppSettingsRoute
   AppIndexRoute: typeof AppIndexRoute
   AppChildrenIdRoute: typeof AppChildrenIdRouteWithChildren
@@ -429,7 +460,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppContractsRoute: AppContractsRouteWithChildren,
-  AppLeadsRoute: AppLeadsRoute,
+  AppLeadsRoute: AppLeadsRouteWithChildren,
   AppSettingsRoute: AppSettingsRoute,
   AppIndexRoute: AppIndexRoute,
   AppChildrenIdRoute: AppChildrenIdRouteWithChildren,
@@ -451,3 +482,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
