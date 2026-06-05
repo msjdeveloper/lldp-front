@@ -18,6 +18,7 @@ import { Route as AppLeadsRouteImport } from './routes/_app.leads'
 import { Route as AppContractsRouteImport } from './routes/_app.contracts'
 import { Route as AppInvoicesIndexRouteImport } from './routes/_app.invoices.index'
 import { Route as AppChildrenIndexRouteImport } from './routes/_app.children.index'
+import { Route as AppInvoicesNewRouteImport } from './routes/_app.invoices.new'
 import { Route as AppInvoicesIdRouteImport } from './routes/_app.invoices.$id'
 import { Route as AppContractsNewRouteImport } from './routes/_app.contracts.new'
 import { Route as AppContractsIdRouteImport } from './routes/_app.contracts.$id'
@@ -69,6 +70,11 @@ const AppChildrenIndexRoute = AppChildrenIndexRouteImport.update({
   path: '/children/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppInvoicesNewRoute = AppInvoicesNewRouteImport.update({
+  id: '/invoices/new',
+  path: '/invoices/new',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppInvoicesIdRoute = AppInvoicesIdRouteImport.update({
   id: '/invoices/$id',
   path: '/invoices/$id',
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/contracts/$id': typeof AppContractsIdRoute
   '/contracts/new': typeof AppContractsNewRoute
   '/invoices/$id': typeof AppInvoicesIdRoute
+  '/invoices/new': typeof AppInvoicesNewRoute
   '/children/': typeof AppChildrenIndexRoute
   '/invoices/': typeof AppInvoicesIndexRoute
   '/children/$id/edit': typeof AppChildrenIdEditRoute
@@ -128,6 +135,7 @@ export interface FileRoutesByTo {
   '/contracts/$id': typeof AppContractsIdRoute
   '/contracts/new': typeof AppContractsNewRoute
   '/invoices/$id': typeof AppInvoicesIdRoute
+  '/invoices/new': typeof AppInvoicesNewRoute
   '/children': typeof AppChildrenIndexRoute
   '/invoices': typeof AppInvoicesIndexRoute
   '/children/$id/edit': typeof AppChildrenIdEditRoute
@@ -146,6 +154,7 @@ export interface FileRoutesById {
   '/_app/contracts/$id': typeof AppContractsIdRoute
   '/_app/contracts/new': typeof AppContractsNewRoute
   '/_app/invoices/$id': typeof AppInvoicesIdRoute
+  '/_app/invoices/new': typeof AppInvoicesNewRoute
   '/_app/children/': typeof AppChildrenIndexRoute
   '/_app/invoices/': typeof AppInvoicesIndexRoute
   '/_app/children/$id/edit': typeof AppChildrenIdEditRoute
@@ -164,6 +173,7 @@ export interface FileRouteTypes {
     | '/contracts/$id'
     | '/contracts/new'
     | '/invoices/$id'
+    | '/invoices/new'
     | '/children/'
     | '/invoices/'
     | '/children/$id/edit'
@@ -180,6 +190,7 @@ export interface FileRouteTypes {
     | '/contracts/$id'
     | '/contracts/new'
     | '/invoices/$id'
+    | '/invoices/new'
     | '/children'
     | '/invoices'
     | '/children/$id/edit'
@@ -197,6 +208,7 @@ export interface FileRouteTypes {
     | '/_app/contracts/$id'
     | '/_app/contracts/new'
     | '/_app/invoices/$id'
+    | '/_app/invoices/new'
     | '/_app/children/'
     | '/_app/invoices/'
     | '/_app/children/$id/edit'
@@ -270,6 +282,13 @@ declare module '@tanstack/react-router' {
       path: '/children'
       fullPath: '/children/'
       preLoaderRoute: typeof AppChildrenIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/invoices/new': {
+      id: '/_app/invoices/new'
+      path: '/invoices/new'
+      fullPath: '/invoices/new'
+      preLoaderRoute: typeof AppInvoicesNewRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/invoices/$id': {
@@ -352,6 +371,7 @@ interface AppRouteChildren {
   AppChildrenIdRoute: typeof AppChildrenIdRouteWithChildren
   AppChildrenNewRoute: typeof AppChildrenNewRoute
   AppInvoicesIdRoute: typeof AppInvoicesIdRoute
+  AppInvoicesNewRoute: typeof AppInvoicesNewRoute
   AppChildrenIndexRoute: typeof AppChildrenIndexRoute
   AppInvoicesIndexRoute: typeof AppInvoicesIndexRoute
 }
@@ -365,6 +385,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppChildrenIdRoute: AppChildrenIdRouteWithChildren,
   AppChildrenNewRoute: AppChildrenNewRoute,
   AppInvoicesIdRoute: AppInvoicesIdRoute,
+  AppInvoicesNewRoute: AppInvoicesNewRoute,
   AppChildrenIndexRoute: AppChildrenIndexRoute,
   AppInvoicesIndexRoute: AppInvoicesIndexRoute,
 }
@@ -378,3 +399,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
