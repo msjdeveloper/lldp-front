@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Coffee, Utensils, Apple, ChevronLeft, ChevronRight, Pencil, Plus, AlertTriangle } from "lucide-react";
 
-export const Route = createFileRoute("/_app/menu")({
+export const Route = createFileRoute("/_app/menu/")({
   head: () => ({ meta: [{ title: "Menu · Le Lac des Petits" }] }),
   component: MenuPage,
 });
