@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
 import { Route as AppMenuRouteImport } from './routes/_app.menu'
+import { Route as AppLeadsRouteImport } from './routes/_app.leads'
 import { Route as AppInvoicesIndexRouteImport } from './routes/_app.invoices.index'
 import { Route as AppChildrenIndexRouteImport } from './routes/_app.children.index'
 import { Route as AppInvoicesIdRouteImport } from './routes/_app.invoices.$id'
@@ -30,6 +31,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
 const AppMenuRoute = AppMenuRouteImport.update({
   id: '/menu',
   path: '/menu',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLeadsRoute = AppLeadsRouteImport.update({
+  id: '/leads',
+  path: '/leads',
   getParentRoute: () => AppRoute,
 } as any)
 const AppInvoicesIndexRoute = AppInvoicesIndexRouteImport.update({
@@ -60,6 +66,7 @@ const AppChildrenIdRoute = AppChildrenIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
+  '/leads': typeof AppLeadsRoute
   '/menu': typeof AppMenuRoute
   '/children/$id': typeof AppChildrenIdRoute
   '/children/new': typeof AppChildrenNewRoute
@@ -68,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/invoices/': typeof AppInvoicesIndexRoute
 }
 export interface FileRoutesByTo {
+  '/leads': typeof AppLeadsRoute
   '/menu': typeof AppMenuRoute
   '/': typeof AppIndexRoute
   '/children/$id': typeof AppChildrenIdRoute
@@ -79,6 +87,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
+  '/_app/leads': typeof AppLeadsRoute
   '/_app/menu': typeof AppMenuRoute
   '/_app/': typeof AppIndexRoute
   '/_app/children/$id': typeof AppChildrenIdRoute
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/leads'
     | '/menu'
     | '/children/$id'
     | '/children/new'
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
     | '/invoices/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/leads'
     | '/menu'
     | '/'
     | '/children/$id'
@@ -109,6 +120,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_app'
+    | '/_app/leads'
     | '/_app/menu'
     | '/_app/'
     | '/_app/children/$id'
@@ -143,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/menu'
       fullPath: '/menu'
       preLoaderRoute: typeof AppMenuRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/leads': {
+      id: '/_app/leads'
+      path: '/leads'
+      fullPath: '/leads'
+      preLoaderRoute: typeof AppLeadsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/invoices/': {
@@ -184,6 +203,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppLeadsRoute: typeof AppLeadsRoute
   AppMenuRoute: typeof AppMenuRoute
   AppIndexRoute: typeof AppIndexRoute
   AppChildrenIdRoute: typeof AppChildrenIdRoute
@@ -194,6 +214,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppLeadsRoute: AppLeadsRoute,
   AppMenuRoute: AppMenuRoute,
   AppIndexRoute: AppIndexRoute,
   AppChildrenIdRoute: AppChildrenIdRoute,
