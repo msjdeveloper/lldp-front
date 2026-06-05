@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Coffee, Utensils, Apple, ChevronLeft, ChevronRight, Pencil, Plus, AlertTriangle } from "lucide-react";
 
 export const Route = createFileRoute("/_app/menu/")({
