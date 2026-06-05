@@ -49,7 +49,7 @@ function LeadDetail() {
   const [editing, setEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{ name: string; phone: string; email: string; childName: string; childAge: string; visit: string; observations: string; stage: Stage }>({
     name: lead.name,
     phone: lead.phone,
     email: lead.email ?? "",
