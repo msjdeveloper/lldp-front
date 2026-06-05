@@ -74,7 +74,7 @@ function LeadDetail() {
           <h1 className="font-display text-[28px]">{form.name}</h1>
           <div className="text-sm mt-1" style={{ color: "var(--ink-muted)" }}>{form.phone}</div>
         </div>
-        <span className="chip" style={{ background: "var(--canvas-2)", color: stageColor[form.stage] }}>
+        <span className="chip" style={{ background: "var(--canvas-2)", color: stageColor[form.stage as Stage] }}>
           {form.stage}
         </span>
       </section>
