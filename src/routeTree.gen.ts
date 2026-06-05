@@ -19,6 +19,7 @@ import { Route as AppContractsRouteImport } from './routes/_app.contracts'
 import { Route as AppInvoicesIndexRouteImport } from './routes/_app.invoices.index'
 import { Route as AppChildrenIndexRouteImport } from './routes/_app.children.index'
 import { Route as AppInvoicesIdRouteImport } from './routes/_app.invoices.$id'
+import { Route as AppContractsIdRouteImport } from './routes/_app.contracts.$id'
 import { Route as AppChildrenNewRouteImport } from './routes/_app.children.new'
 import { Route as AppChildrenIdRouteImport } from './routes/_app.children.$id'
 
@@ -71,6 +72,11 @@ const AppInvoicesIdRoute = AppInvoicesIdRouteImport.update({
   path: '/invoices/$id',
   getParentRoute: () => AppRoute,
 } as any)
+const AppContractsIdRoute = AppContractsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AppContractsRoute,
+} as any)
 const AppChildrenNewRoute = AppChildrenNewRouteImport.update({
   id: '/children/new',
   path: '/children/new',
@@ -85,25 +91,27 @@ const AppChildrenIdRoute = AppChildrenIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/login': typeof LoginRoute
-  '/contracts': typeof AppContractsRoute
+  '/contracts': typeof AppContractsRouteWithChildren
   '/leads': typeof AppLeadsRoute
   '/menu': typeof AppMenuRoute
   '/settings': typeof AppSettingsRoute
   '/children/$id': typeof AppChildrenIdRoute
   '/children/new': typeof AppChildrenNewRoute
+  '/contracts/$id': typeof AppContractsIdRoute
   '/invoices/$id': typeof AppInvoicesIdRoute
   '/children/': typeof AppChildrenIndexRoute
   '/invoices/': typeof AppInvoicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
-  '/contracts': typeof AppContractsRoute
+  '/contracts': typeof AppContractsRouteWithChildren
   '/leads': typeof AppLeadsRoute
   '/menu': typeof AppMenuRoute
   '/settings': typeof AppSettingsRoute
   '/': typeof AppIndexRoute
   '/children/$id': typeof AppChildrenIdRoute
   '/children/new': typeof AppChildrenNewRoute
+  '/contracts/$id': typeof AppContractsIdRoute
   '/invoices/$id': typeof AppInvoicesIdRoute
   '/children': typeof AppChildrenIndexRoute
   '/invoices': typeof AppInvoicesIndexRoute
@@ -112,13 +120,14 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
-  '/_app/contracts': typeof AppContractsRoute
+  '/_app/contracts': typeof AppContractsRouteWithChildren
   '/_app/leads': typeof AppLeadsRoute
   '/_app/menu': typeof AppMenuRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/': typeof AppIndexRoute
   '/_app/children/$id': typeof AppChildrenIdRoute
   '/_app/children/new': typeof AppChildrenNewRoute
+  '/_app/contracts/$id': typeof AppContractsIdRoute
   '/_app/invoices/$id': typeof AppInvoicesIdRoute
   '/_app/children/': typeof AppChildrenIndexRoute
   '/_app/invoices/': typeof AppInvoicesIndexRoute
@@ -134,6 +143,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/children/$id'
     | '/children/new'
+    | '/contracts/$id'
     | '/invoices/$id'
     | '/children/'
     | '/invoices/'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/'
     | '/children/$id'
     | '/children/new'
+    | '/contracts/$id'
     | '/invoices/$id'
     | '/children'
     | '/invoices'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/_app/'
     | '/_app/children/$id'
     | '/_app/children/new'
+    | '/_app/contracts/$id'
     | '/_app/invoices/$id'
     | '/_app/children/'
     | '/_app/invoices/'
@@ -243,6 +255,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppInvoicesIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/contracts/$id': {
+      id: '/_app/contracts/$id'
+      path: '/$id'
+      fullPath: '/contracts/$id'
+      preLoaderRoute: typeof AppContractsIdRouteImport
+      parentRoute: typeof AppContractsRoute
+    }
     '/_app/children/new': {
       id: '/_app/children/new'
       path: '/children/new'
@@ -260,8 +279,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AppContractsRouteChildren {
+  AppContractsIdRoute: typeof AppContractsIdRoute
+}
+
+const AppContractsRouteChildren: AppContractsRouteChildren = {
+  AppContractsIdRoute: AppContractsIdRoute,
+}
+
+const AppContractsRouteWithChildren = AppContractsRoute._addFileChildren(
+  AppContractsRouteChildren,
+)
+
 interface AppRouteChildren {
-  AppContractsRoute: typeof AppContractsRoute
+  AppContractsRoute: typeof AppContractsRouteWithChildren
   AppLeadsRoute: typeof AppLeadsRoute
   AppMenuRoute: typeof AppMenuRoute
   AppSettingsRoute: typeof AppSettingsRoute
@@ -274,7 +305,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppContractsRoute: AppContractsRoute,
+  AppContractsRoute: AppContractsRouteWithChildren,
   AppLeadsRoute: AppLeadsRoute,
   AppMenuRoute: AppMenuRoute,
   AppSettingsRoute: AppSettingsRoute,
@@ -295,3 +326,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
