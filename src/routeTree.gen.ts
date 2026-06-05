@@ -15,6 +15,7 @@ import { Route as AppIndexRouteImport } from './routes/_app.index'
 import { Route as AppSettingsRouteImport } from './routes/_app.settings'
 import { Route as AppMenuRouteImport } from './routes/_app.menu'
 import { Route as AppLeadsRouteImport } from './routes/_app.leads'
+import { Route as AppContractsRouteImport } from './routes/_app.contracts'
 import { Route as AppInvoicesIndexRouteImport } from './routes/_app.invoices.index'
 import { Route as AppChildrenIndexRouteImport } from './routes/_app.children.index'
 import { Route as AppInvoicesIdRouteImport } from './routes/_app.invoices.$id'
@@ -50,6 +51,11 @@ const AppLeadsRoute = AppLeadsRouteImport.update({
   path: '/leads',
   getParentRoute: () => AppRoute,
 } as any)
+const AppContractsRoute = AppContractsRouteImport.update({
+  id: '/contracts',
+  path: '/contracts',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppInvoicesIndexRoute = AppInvoicesIndexRouteImport.update({
   id: '/invoices/',
   path: '/invoices/',
@@ -79,6 +85,7 @@ const AppChildrenIdRoute = AppChildrenIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/login': typeof LoginRoute
+  '/contracts': typeof AppContractsRoute
   '/leads': typeof AppLeadsRoute
   '/menu': typeof AppMenuRoute
   '/settings': typeof AppSettingsRoute
@@ -90,6 +97,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
+  '/contracts': typeof AppContractsRoute
   '/leads': typeof AppLeadsRoute
   '/menu': typeof AppMenuRoute
   '/settings': typeof AppSettingsRoute
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
+  '/_app/contracts': typeof AppContractsRoute
   '/_app/leads': typeof AppLeadsRoute
   '/_app/menu': typeof AppMenuRoute
   '/_app/settings': typeof AppSettingsRoute
@@ -119,6 +128,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/contracts'
     | '/leads'
     | '/menu'
     | '/settings'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
+    | '/contracts'
     | '/leads'
     | '/menu'
     | '/settings'
@@ -143,6 +154,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_app'
     | '/login'
+    | '/_app/contracts'
     | '/_app/leads'
     | '/_app/menu'
     | '/_app/settings'
@@ -203,6 +215,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLeadsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/contracts': {
+      id: '/_app/contracts'
+      path: '/contracts'
+      fullPath: '/contracts'
+      preLoaderRoute: typeof AppContractsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/invoices/': {
       id: '/_app/invoices/'
       path: '/invoices'
@@ -242,6 +261,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppContractsRoute: typeof AppContractsRoute
   AppLeadsRoute: typeof AppLeadsRoute
   AppMenuRoute: typeof AppMenuRoute
   AppSettingsRoute: typeof AppSettingsRoute
@@ -254,6 +274,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppContractsRoute: AppContractsRoute,
   AppLeadsRoute: AppLeadsRoute,
   AppMenuRoute: AppMenuRoute,
   AppSettingsRoute: AppSettingsRoute,
