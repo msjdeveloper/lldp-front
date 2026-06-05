@@ -22,9 +22,9 @@ const nav: Item[] = [
   { to: "/leads", icon: UserPlus, label: "Leads" },
 ];
 
-function LogoMark({ className = "" }: { className?: string }) {
+function LogoMark({ className = "", color = "var(--sage)" }: { className?: string; color?: string }) {
   return (
-    <svg viewBox="0 0 32 32" className={className} fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 32 32" className={className} style={{ color }} fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M6 14 L16 5 L26 14 V25 a2 2 0 0 1 -2 2 H8 a2 2 0 0 1 -2 -2 Z" />
       <path d="M16 27 V18" />
       <path d="M22 9 V5 M20 7 H24" opacity=".7" />
