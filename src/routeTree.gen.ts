@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
 import { Route as AppChildrenIndexRouteImport } from './routes/_app.children.index'
+import { Route as AppChildrenNewRouteImport } from './routes/_app.children.new'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -27,27 +28,35 @@ const AppChildrenIndexRoute = AppChildrenIndexRouteImport.update({
   path: '/children/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppChildrenNewRoute = AppChildrenNewRouteImport.update({
+  id: '/children/new',
+  path: '/children/new',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
+  '/children/new': typeof AppChildrenNewRoute
   '/children/': typeof AppChildrenIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
+  '/children/new': typeof AppChildrenNewRoute
   '/children': typeof AppChildrenIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
   '/_app/': typeof AppIndexRoute
+  '/_app/children/new': typeof AppChildrenNewRoute
   '/_app/children/': typeof AppChildrenIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/children/'
+  fullPaths: '/' | '/children/new' | '/children/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/children'
-  id: '__root__' | '/_app' | '/_app/' | '/_app/children/'
+  to: '/' | '/children/new' | '/children'
+  id: '__root__' | '/_app' | '/_app/' | '/_app/children/new' | '/_app/children/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,16 +86,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppChildrenIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/children/new': {
+      id: '/_app/children/new'
+      path: '/children/new'
+      fullPath: '/children/new'
+      preLoaderRoute: typeof AppChildrenNewRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
+  AppChildrenNewRoute: typeof AppChildrenNewRoute
   AppChildrenIndexRoute: typeof AppChildrenIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppIndexRoute: AppIndexRoute,
+  AppChildrenNewRoute: AppChildrenNewRoute,
   AppChildrenIndexRoute: AppChildrenIndexRoute,
 }
 
